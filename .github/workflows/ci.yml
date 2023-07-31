@@ -25,6 +25,7 @@ jobs:
         if: github.event_name == 'push'
         run: npm run build
       - name: deploy to staging
+        if: github.event_name == 'push'
         run: npx surge ./build --domain astonishing-current.surge.sh
         env:
           SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
