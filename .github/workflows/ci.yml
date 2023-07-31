@@ -16,7 +16,7 @@ jobs:
         with:
           path: ~/.npm
           key: node-${{hashFiles('**/package-lock.json')}}
-          restore-key: |
+          restore-keys: |
             node-
       - name: Use NodeJS
         uses: actions/setup-node@v1
@@ -27,10 +27,20 @@ jobs:
       - run: npm test -- --coverage
         env:
           CI: true
+      - name: upload test coverage
+        uses: action/upload-artifact@v1
+        with:
+          name: code-coverage
+          path: coverage
       - run: npm install -g surge
       - name: Build project
         if: github.event_name == 'push'
         run: npm run build
+      - name: upload build folder
+        uses: action/upload-artifact@v1
+        with:
+          name: build
+          path: build
       - name: deploy to staging
         if: github.event_name == 'push'
         run: npx surge ./build --domain astonishing-current.surge.sh
