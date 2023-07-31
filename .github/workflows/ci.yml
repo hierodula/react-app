@@ -3,9 +3,11 @@ on:
   pull_request:
     branches:
       - develop
+      - master
   push:
     branches:
       - develop
+      - master
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,7 +18,7 @@ jobs:
         with:
           path: ~/.npm
           key: node-${{hashFiles('**/package-lock.json')}}
-          restore-key: |
+          restore-keys: |
             node-
       - name: Use NodeJS
         uses: actions/setup-node@v1
@@ -27,10 +29,26 @@ jobs:
       - run: npm test -- --coverage
         env:
           CI: true
+      - name: upload test coverage
+        uses: actions/upload-artifact@v1
+        with:
+          name: code-coverage
+          path: coverage
       - run: npm install -g surge
       - name: Build project
         if: github.event_name == 'push'
         run: npm run build
+      - name: upload build folder
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v1
+        with:
+          name: build
+          path: build
+      - name: create release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: deploy to staging
         if: github.event_name == 'push'
         run: npx surge ./build --domain astonishing-current.surge.sh
