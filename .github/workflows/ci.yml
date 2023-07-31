@@ -11,6 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: cache node_modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: node-${{hashFiles('**/package-lock.json')}}
+          restore-key: |
+            node-
       - name: Use NodeJS
         uses: actions/setup-node@v1
         with:
@@ -21,7 +28,7 @@ jobs:
         env:
           CI: true
       - run: npm install -g surge
-      - name: Buid project
+      - name: Build project
         if: github.event_name == 'push'
         run: npm run build
       - name: deploy to staging
