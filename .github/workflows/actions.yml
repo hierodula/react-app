@@ -10,4 +10,4 @@ jobs:
         id: hello
         with:
           who-to-greet: "anybody here"
-      - run: echo "Time ${{steps.hello.output.time}}"
+      - run: echo "Time ${{steps.hello.outputs.time}}"
