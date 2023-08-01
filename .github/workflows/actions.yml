@@ -9,5 +9,5 @@ jobs:
       - uses: ./.github/actions/hello
         id: hello
         with:
-          who-to-greet: 'anybody here'
+          who-to-greet: "anybody here"
       - run: echo "Time ${{steps.hello.output.time}}"
