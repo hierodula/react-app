@@ -11,6 +11,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+      SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - name: cache node_modules
@@ -55,8 +58,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: deploy to staging
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.ref == refs/heads/develop''
         run: npx surge ./build --domain astonishing-current.surge.sh
+      - name: deploy to production
+        if: github.event_name == 'push' && github.ref == refs/heads/master''
+        run: npx surge ./build --domain happy-neck.surge.sh
+      - name: upload coverage
+        if: github.event_name == 'push' && github.ref == refs/heads/master''
+        run: npx codecov
         env:
-          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
-          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+          CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
