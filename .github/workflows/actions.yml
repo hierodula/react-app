@@ -12,8 +12,8 @@ jobs:
       #    title: Title
       #    body: Body
       #    assigne#s: "hierodula"
-      - run: |
-          echo ${{steps.issue.outputs.issue}}
+      #- run: |
+      #    echo ${{steps.issue.outputs.issue}}
       - uses: ./.github/actions/hello-docker
         id: hello
         with:
