@@ -1,0 +1,14 @@
+name: Hello World
+author: me
+description: does something
+inputs:
+  who-to-greet:
+    description: a string
+    required: true
+    default: somebody
+outputs:
+  time:
+    description: the current ts
+runs:
+  using: node16
+  main: ./dist/index.js
