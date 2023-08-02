@@ -5,7 +5,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ./.github/actions/hello
+      #- uses: ./.github/actions/issue
+      #  id: issue
+      #  with:
+      #    token: ${{secrets.GITHUB_TOKEN}}
+      #    title: Title
+      #    body: Body
+      #    assigne#s: "hierodula"
+      #- run: |
+      #    echo ${{steps.issue.outputs.issue}}
+      - uses: ./.github/actions/hello-docker
         id: hello
         with:
           who-to-greet: "anybody here"

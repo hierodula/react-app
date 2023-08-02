@@ -1,0 +1,20 @@
+name: issue creation
+author: me
+description: creates issue
+inputs:
+  token:
+    description: "Github token"
+    required: true
+  title:
+    description: "Issue title"
+    requirerd: true
+  body:
+    description: "issue body"
+  assignees:
+    description: "Issue assignees"
+outputs:
+  issue:
+    description: "issue as string"
+runs:
+  using: node16
+  main: ./dist/index.js
